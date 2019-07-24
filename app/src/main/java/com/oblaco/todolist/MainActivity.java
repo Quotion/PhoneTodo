@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.textfield.TextInputEditText;
-import org.postgresql.*;
 import org.xmlpull.v1.sax2.Driver;
 
 import com.google.gson.Gson;
@@ -159,75 +158,66 @@ public class MainActivity extends ListActivity implements OnTouchListener{
         */
 
         //доступ к JSON
-        try
-            {
-            Ion.with(this)
-                    .load(DriverManager.getConnection(
-                            "postgres://flxekmxtwhglsc:6b8bb611979c80258c965690b418077ea9f02e8e2c2d8f3b02d1487497111d28@ec2\n-174-129-227-80.compute-1.amazonaws.com:5432/d18poj5em2p0h6",
-                            "flxekmxtwhglsc",
-                            "6b8bb611979c80258c965690b418077ea9f02e8e2c2d8f3b02d1487497111d28").setCatalog(new FutureCallback<JsonArray>())
-                    .setCallback(new FutureCallback<JsonArray>() {
-                @Override
-                public void onCompleted(Exception e, JsonArray result) {
-                    if (result != null) {
-                        for (final JsonElement projectJsonElement : result) {
-                            projects.add(new Gson().fromJson(projectJsonElement, Project.class));
-                        }
-                    }
-
-                    if(projects != null) {
-                        final String projectsArray[] = new String[projects.size()];
-                        final Bundle bundle = getIntent().getExtras();
-
-                        if (bundle != null) {
-                            final String[] newData = bundle.getStringArray("kew_word");
-                            Project proj = projects.get(Integer.parseInt(newData[0]));
-                            List<Todos> todos = proj.getTodos();
-                        }
-
-                        mAdapter = new MyCustomAdapter();
-                        for (int i = 0; i < projects.size(); i++) {
-                            Project prj = projects.get(i);
-                            projectsArray[i] = prj.getTitle();
-                            mAdapter.addSeparatorItem(prj.getTitle());
-                            List<Todos> todos = prj.getTodos();
-                            for (int j = 0; j < todos.size(); j++) {
-                                Todos tds = todos.get(j);
-                                mAdapter.addItem(tds.getText());
-                            }
-                        }
-
-                        setListAdapter(mAdapter);
-
-                        FloatingActionButton btnActTwo = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-                        btnActTwo.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Bundle bundle = new Bundle();
-                                bundle.putStringArray("EXTRA_SESSION_ID", projectsArray);
-                                Intent intent = new Intent(getBaseContext(), projectsList.class);
-                                intent.putExtras(bundle);
-                                startActivity(intent);
-                            }
-                        });
-
-                        ViewHolder holder = new ViewHolder();
-                        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                                Todos totoInFocus = (Todos) compoundButton.getTag();
-                                if (totoInFocus.isCompleted == isChecked) return;
-                            }
-                        });
+        Ion.with(this)
+                .load("http://besttotdolistever.herokuapp.com/todos/json")
+                .asJsonArray()
+                .setCallback(new FutureCallback<JsonArray>() {
+            @Override
+            public void onCompleted(Exception e, JsonArray result) {
+                if (result != null) {
+                    for (final JsonElement projectJsonElement : result) {
+                        projects.add(new Gson().fromJson(projectJsonElement, Project.class));
                     }
                 }
-            });
-        }
-        catch (SQLException e) {
-            Log.v("Database", "Info -> Database connection failed. More: ");
-            e.printStackTrace();
-        }
 
+                if(projects != null) {
+                    final String projectsArray[] = new String[projects.size()];
+                    final Bundle bundle = getIntent().getExtras();
+
+                    if (bundle != null) {
+                        final String[] newData = bundle.getStringArray("kew_word");
+                        Project proj = projects.get(Integer.parseInt(newData[0]));
+                        List<Todos> todos = proj.getTodos();
+                    }
+
+                    mAdapter = new MyCustomAdapter();
+                    for (int i = 0; i < projects.size(); i++) {
+                        Project prj = projects.get(i);
+                        projectsArray[i] = prj.getTitle();
+                        mAdapter.addSeparatorItem(prj.getTitle());
+                        List<Todos> todos = prj.getTodos();
+                        for (int j = 0; j < todos.size(); j++) {
+                            Todos tds = todos.get(j);
+                            mAdapter.addItem(tds.getText());
+                        }
+                    }
+
+                    setListAdapter(mAdapter);
+
+                    FloatingActionButton btnActTwo = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+                    btnActTwo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Bundle bundle = new Bundle();
+                            bundle.putStringArray("EXTRA_SESSION_ID", projectsArray);
+                            Intent intent = new Intent(getBaseContext(), projectsList.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                    });
+                    /*
+                    ViewHolder holder = new ViewHolder();
+                    holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            Todos totoInFocus = (Todos) compoundButton.getTag();
+                            if (totoInFocus.isCompleted == isChecked) return;
+                        }
+                    });
+                    */
+                }
+            }
+        });
     }
 
 
