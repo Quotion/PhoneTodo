@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent">
+
+    <TextView
+        android:id="@+id/textSeparator"
+        android:layout_width="1000dp"
+        android:layout_height="49dp"
+        android:background="#F0F0F0"
+        android:fontFamily="@font/open_sans_light"
+        android:freezesText="false"
+        android:gravity="center"
+        android:hapticFeedbackEnabled="false"
+        android:text="text"
+        android:textColor="#000000"
+        android:textIsSelectable="false"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:translationX="-455dp"
+        android:visibility="visible" />
+
+
+</LinearLayout>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Todolist</string>
+    <string name="item2">text</string>
+    <string name="item1">text</string>
+    <string name="Todo">Задачи</string>
+    <string name="todo">TODO</string>
+    <string name="newtodo">Новая задача</string>
+    <string name="todolist">ЗАДАЧА</string>
+    <string name="nametodo">Название задачи</string>
+    <string name="category">КАТЕГОРИЯ</string>
+</resources>
