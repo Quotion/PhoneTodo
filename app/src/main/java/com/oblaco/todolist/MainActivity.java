@@ -5,17 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.textfield.TextInputEditText;
-import org.xmlpull.v1.sax2.Driver;
-
 import com.google.gson.Gson;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.CompoundButton;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonArray;
@@ -129,33 +121,6 @@ public class MainActivity extends ListActivity implements OnTouchListener{
 
         Connection conn = null;
         Statement statement = null;
-
-        /*
-        try
-        {
-            Class.forName("Driver");
-            conn = DriverManager.getConnection(
-                    "postgres://flxekmxtwhglsc:6b8bb611979c80258c965690b418077ea9f02e8e2c2d8f3b02d1487497111d28@ec2\n-174-129-227-80.compute-1.amazonaws.com:5432/d18poj5em2p0h6",
-                    "flxekmxtwhglsc",
-                    "6b8bb611979c80258c965690b418077ea9f02e8e2c2d8f3b02d1487497111d28");
-            conn.setAutoCommit(false);
-            Log.v("Database", "Info -> Database connection successful establishment.");
-
-
-            statement = conn.createStatement();
-            ResultSet result = statement.executeQuery( "SELECT * FROM projects;" );
-            String title = result.getString("title");
-            result.close();
-            statement.close();
-            conn.commit();
-            Log.v("Check", "Data -> " + title);
-        }
-        catch (SQLException e)
-        {
-            Log.v("Database", "Info -> Database connection failed. More: ");
-            e.printStackTrace();
-        }
-        */
 
         //доступ к JSON
         Ion.with(this)
